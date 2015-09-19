@@ -1,0 +1,20 @@
+{
+  "name": "ags_scrape",
+  "version": "0.0.0",
+  "authors": [
+    "sainsb <redtrails@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "bootstrap-treeview": "~1.2.0",
+    "jquery": "~2.1.4"
+  }
+}

@@ -44,7 +44,7 @@
 	<!-- script references -->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
+   <!-- https://jsfiddle.net/jhfrench/GpdgF/ -->
 
     <script>
 
@@ -77,9 +77,28 @@
               root_defs.push(processServices(data.services));
 
               $.when.apply(null, root_defs).done(function() {
-                $('#tree').treeview({
-                  data: tree,  
-                  levels: 1
+                console.log(tree);
+                var htm ='<div class="tree well"><ul><li>';
+                for(var i=0;i<tree.length;i++){
+                  htm+='<span><i class="icon-folder-open"></i>'+ tree[i].text+'</span>';
+                  htm+= makeTree(tree[i]);
+                }
+
+                htm+='</li></ul></div>';
+
+                $('#tree').empty().append(htm);
+
+                 $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+                $('.tree li.parent_li > span').on('click', function (e) {
+                    var children = $(this).parent('li.parent_li').find(' > ul > li');
+                    if (children.is(":visible")) {
+                        children.hide('fast');
+                        $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                    } else {
+                        children.show('fast');
+                        $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                    }
+                    e.stopPropagation();
                 });
               });
             });
@@ -90,6 +109,22 @@
           }
        }
     });
+
+    function makeTree(branch){
+
+      var html="<ul>";
+        // <li>
+        //     <span><i class="icon-folder-open"></i> Parent</span> <a href="">Goes somewhere</a>"
+
+        for (var j=0;j<branch.nodes.length;j++){
+          html+='<li><span><i class="icon-minus-sign"></i> Child</span><a href="'+branch.nodes[j].url+'">'+branch.nodes[j].text+"</a></li>";
+        }
+
+        html+='</ul>';
+
+        return html;
+
+    }
 
     function processFolders(folders){
 

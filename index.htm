@@ -24,7 +24,7 @@
     <div class="col-md-8">
         <div class="input-group">
             <span class="input-group-addon">AGS URL</span>
-            <input id="txtURL" value='http://gis.oregonmetro.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
+            <input id="txtURL" value='https://www.portlandmaps.com/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
         </div>
     </div>
 </div>
@@ -41,6 +41,21 @@
     </div>
 </div>
 
+<div class='row'>
+<div class='md-col-12'>
+<ul>
+<li>Washington County, OR <a class='inputs'>http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/</a></li>
+<li>Multnomah County, OR <a class='inputs'>http://www3.multco.us/arcgispublic/rest/services</a></li>
+<li>Clackamas County, OR <a class='inputs'></a></li>
+<li>City of Portland, OR <a class='inputs'>https://www.portlandmaps.com/arcgis/rest/services/</a></li>
+<li>Clark County, WA <a class='inputs'>http://gis.clark.wa.gov/arcgis/rest/services/</a></li>
+<li>Oregon Metro <a class='inputs'>http://gis.oregonmetro.gov/ArcGIS/rest/services/</a></li>
+<li>City of Gresham, OR <a class='inputs'>http://maps.greshamoregon.gov/arcgis/rest/services/</a></li>
+</ul>
+
+</div>
+</div>
+
 	<!-- script references -->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -51,63 +66,76 @@
     var root_url = "";
     var tree = [];
 
-    $('#txtURL').on('keydown', function(e){
-      var code = e.keyCode || e.which;
-       if(code == 13) { 
-          tree=[];
-          if(validateURL($(this).val())){
+    $('#txtURL').on('keydown', function(e) {
+    	var code = e.keyCode || e.which;
+    	if (code == 13) {
+    		tree = [];
+    		if (validateURL($(this).val())) {
 
-            root_url = $(this).val();
-            //do we have a foraward slash at the end of it?
-            if(root_url.charAt(root_url.length-1)!='/'){
-              root_url += '/';
-            }
+    			root_url = $(this).val();
+    			//do we have a forward slash at the end of it?
+    			if (root_url.charAt(root_url.length - 1) != '/') {
+    				root_url += '/';
+    			}
 
-            if(root_url.indexOf("?f=json") != -1){
-              root_url = root_url.replace('?f=json','');
-            }
+    			if (root_url.indexOf("?f=json") != -1) {
+    				root_url = root_url.replace('?f=json', '');
+    			}
 
-            $.getJSON(root_url+'?f=json').then(function(data){
-              //at the root we have a list of folders and services
+    			$.getJSON(root_url + '?f=json').then(function(data) {
 
-              var root_defs= [];
+    				var root_defs = [];
 
-              root_defs.push(processFolders(data.folders));
-              
-              root_defs.push(processServices(data.services));
+    				root_defs.push(processFolders(data.folders));
 
-              $.when.apply(null, root_defs).done(function() {
-                console.log(tree);
-                var htm ='<div class="tree well"><ul><li>';
-                for(var i=0;i<tree.length;i++){
-                  htm+='<span><i class="icon-folder-open"></i>'+ tree[i].text+'</span>';
-                  htm+= makeTree(tree[i]);
-                }
+    				root_defs.push(processServices(data.services));
 
-                htm+='</li></ul></div>';
+    				$.when.apply(null, root_defs).done(function() {
+    					
+    					//recursive alphabetize
+    					function compare(a,b) {
+						  if (a.text < b.text)
+						    return -1;
+						  if (a.text > b.text)
+						    return 1;
+						  return 0;
+						}
 
-                $('#tree').empty().append(htm);
+            console.log(tree);
 
-                 $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
-                $('.tree li.parent_li > span').on('click', function (e) {
-                    var children = $(this).parent('li.parent_li').find(' > ul > li');
-                    if (children.is(":visible")) {
-                        children.hide('fast');
-                        $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-                    } else {
-                        children.show('fast');
-                        $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-                    }
-                    e.stopPropagation();
-                });
-              });
-            });
-          }else{
-            //for the root
-            //change the form to red n stuff
+						tree.sort(compare);
 
-          }
-       }
+    					var htm = '<div class="tree well"><ul>';
+    					for (var i = 0; i < tree.length; i++) {
+    						htm += '<li><span><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
+    						htm += makeTree(tree[i]);
+    						htm+='</li>';
+    					}
+
+    					htm += '</ul></div>';
+
+    					$('#tree').empty().append(htm);
+
+    					$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    					$('.tree li.parent_li > span').on('click', function(e) {
+    						var children = $(this).parent('li.parent_li').find(' > ul > li');
+    						if (children.is(":visible")) {
+    							children.hide('fast');
+    							$(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+    						} else {
+    							children.show('fast');
+    							$(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+    						}
+    						e.stopPropagation();
+    					});
+    				});
+    			});
+    		} else {
+    			//for the root
+    			//change the form to red n stuff
+
+    		}
+    	}
     });
 
     function makeTree(branch){
@@ -117,13 +145,19 @@
         //     <span><i class="icon-folder-open"></i> Parent</span> <a href="">Goes somewhere</a>"
 
         for (var j=0;j<branch.nodes.length;j++){
-          html+='<li><span><i class="icon-minus-sign"></i> Child</span><a href="'+branch.nodes[j].url+'">'+branch.nodes[j].text+"</a></li>";
+
+          if(typeof branch.nodes[j].nodes != 'undefined'){
+            html+= '<li><span><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span><ul>';
+            html+= makeTree(branch.nodes[j]);
+            html += '</ul></li>';
+          } else {
+            html+='<li><span><i class="icon-minus-sign"></i><a href="'+branch.nodes[j].url+'" target="_blank">'+branch.nodes[j].text+"</a> </span></li>";
+          }
         }
 
         html+='</ul>';
 
         return html;
-
     }
 
     function processFolders(folders){
@@ -173,7 +207,9 @@
         if (v.type == 'MapServer') {
           deferreds.push(
             $.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
-              serviceHelper(v, data, root_url + v.name + '/' + v.type+'/');
+              var url = root_url + v.name + '/' + v.type+'/';
+              
+              serviceHelper(v, data, url);
             })
           );
         }
@@ -186,29 +222,58 @@
       return def.promise();
     }
 
-    function serviceHelper(v, data, url){
-       //tree.push({text:'root', nodes:[]}
-        var cat = {text:v.name, nodes:[]};
+    function serviceHelper(v, data, url) {
+      //tree.push({text:'root', nodes:[]}
+        
+      var cat = {
+        text: v.name,
+        nodes: []
+      };
 
-        $.each(data.layers, function(_i,_v){
+      $.each(data.layers, function(_i, _v) {
 
-          if(_v.subLayerIds!=null){
-            var group = {text:_v.name, nodes:[]};
-          
-            $.each(_v.subLayerIds, function(__i,__v){
-              group.nodes.push({text:data.layers[__v].name, url:url, layer:__v});
-            });
-            cat.nodes.push(group);
-          }
+        if (_v.subLayerIds != null) {
+          var group = {
+            text: _v.name,
+            nodes: []
+          };
 
-          if(_v.parentLayerId==-1 && _v.subLayerIds==null){
-            cat.nodes.push({text:_v.name, layer:_i, url: url});
-          }
-        });
+          $.each(_v.subLayerIds, function(__i, __v) {
 
-        tree.push(cat);
+            try {
+
+              var lyr = $.grep(data.layers, function(a){
+                return a.id == __v;
+              })[0];
+
+              console.log(lyr)
+
+              group.nodes.push({
+                text: lyr.name,
+                url: url,
+                layer: __v
+              });
+            } catch (ex) {
+              console.log(_v);
+              console.log(url);
+              console.log(__v);
+              console.log(data.layers[__v]);
+            }
+          });
+          cat.nodes.push(group);
+        }
+
+        if (_v.parentLayerId == -1 && _v.subLayerIds == null) {
+          cat.nodes.push({
+            text: _v.name,
+            layer: _i,
+            url: url
+          });
+        }
+      });
+
+      tree.push(cat);
     }
-
 
  function validateURL(value){
       return false || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);

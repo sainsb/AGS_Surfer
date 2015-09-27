@@ -9,7 +9,6 @@
 		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 		<link href="css/styles.css" rel="stylesheet">
-    <link href='bower_components/bootstrap-treeview/dist/bootstrap-treeview.min.css' rel='stylesheet'>
 	</head>
 	<body>
 
@@ -51,6 +50,7 @@
 <li>Clark County, WA <a class='inputs'>http://gis.clark.wa.gov/arcgis/rest/services/</a></li>
 <li>Oregon Metro <a class='inputs'>http://gis.oregonmetro.gov/ArcGIS/rest/services/</a></li>
 <li>City of Gresham, OR <a class='inputs'>http://maps.greshamoregon.gov/arcgis/rest/services/</a></li>
+<li>Portland Public Schools <a class='inputs'>https://arcgis.pps.net/arcgis/rest/services/</a></li>
 </ul>
 
 </div>
@@ -59,6 +59,7 @@
 	<!-- script references -->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
    <!-- https://jsfiddle.net/jhfrench/GpdgF/ -->
 
     <script>
@@ -101,13 +102,11 @@
 						  return 0;
 						}
 
-            console.log(tree);
-
 						tree.sort(compare);
 
     					var htm = '<div class="tree well"><ul>';
     					for (var i = 0; i < tree.length; i++) {
-    						htm += '<li><span><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
+    						htm += '<li><span class="'+tree[i].type +'"><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
     						htm += makeTree(tree[i]);
     						htm+='</li>';
     					}
@@ -115,6 +114,15 @@
     					htm += '</ul></div>';
 
     					$('#tree').empty().append(htm);
+
+              $('.tree').prepend('<button class="btn btn-primary" id="btnCollapseAll">Collapse All</button>');
+
+              $("#btnCollapseAll").on('click', function(){
+                var children = $('li.parent_li').find(' > ul > li');
+                if (children.is(":visible")) {
+                  children.hide('fast');
+                }
+              });
 
     					$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
     					$('.tree li.parent_li > span').on('click', function(e) {
@@ -141,15 +149,13 @@
     function makeTree(branch){
 
       var html="<ul>";
-        // <li>
-        //     <span><i class="icon-folder-open"></i> Parent</span> <a href="">Goes somewhere</a>"
 
         for (var j=0;j<branch.nodes.length;j++){
 
           if(typeof branch.nodes[j].nodes != 'undefined'){
-            html+= '<li><span><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span><ul>';
+            html+= '<li><span><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
             html+= makeTree(branch.nodes[j]);
-            html += '</ul></li>';
+            html += '</li>';
           } else {
             html+='<li><span><i class="icon-minus-sign"></i><a href="'+branch.nodes[j].url+'" target="_blank">'+branch.nodes[j].text+"</a> </span></li>";
           }
@@ -204,14 +210,91 @@
       var deferreds = [];
 
       $.each(services, function(i, v) {
+
         if (v.type == 'MapServer') {
           deferreds.push(
             $.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
               var url = root_url + v.name + '/' + v.type+'/';
-              
               serviceHelper(v, data, url);
             })
           );
+        } else if(v.type =='GeocodeServer'){
+          var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='GPServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='ImageServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='GeometryServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='ImageServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='MobileServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='IndexingLauncher'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='SearchServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='IndexGenerator'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        } else if(v.type=='FeatureServer'){
+           var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
+        }else { 
+          var cat = {
+            text: v.name,
+            type: v.type,
+            nodes: []
+          };
+          tree.push(cat);
         }
       });
 
@@ -224,9 +307,9 @@
 
     function serviceHelper(v, data, url) {
       //tree.push({text:'root', nodes:[]}
-        
       var cat = {
         text: v.name,
+        type: (typeof data.tileInfo =='undefined') ? "MapServer" : "MapServer_Tiled",
         nodes: []
       };
 
@@ -246,11 +329,10 @@
                 return a.id == __v;
               })[0];
 
-              console.log(lyr)
-
               group.nodes.push({
                 text: lyr.name,
                 url: url,
+                type: "MapServer",
                 layer: __v
               });
             } catch (ex) {
@@ -267,6 +349,7 @@
           cat.nodes.push({
             text: _v.name,
             layer: _i,
+            type:"MapServer",
             url: url
           });
         }

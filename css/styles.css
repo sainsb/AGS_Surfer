@@ -59,3 +59,43 @@
     border:1px solid #94a0b4;
     color:#000
 }
+
+.tree li span.GeocodeServer {
+    background-color:#FFFDD3;
+}
+
+.tree li span.GeocodeServer:hover {
+    background-color:#FFFEE6;
+}
+
+.tree li span.MapServer {
+    background-color:#CEE0F5;
+}
+
+.tree li span.MapServer:hover {
+    background-color:#E4EFFB;
+}
+
+.tree li span.GPServer {
+    background-color:#CBF5E8;
+}
+
+.tree li span.GPServer:hover {
+    background-color:#E2FBF4;
+}
+
+.tree li span.MapServer_Tiled {
+    background-color:#FFD5D3;
+}
+
+.tree li span.MapServer_Tiled:hover {
+    background-color:#FFE7E6;
+}
+
+.tree li span.ImageServer {
+    background-color:#CBF6E6;
+}
+
+.tree li span.ImageServer:hover {
+    background-color:#E2FBF2;
+}

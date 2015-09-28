@@ -60,50 +60,57 @@
     color:#000
 }
 
-.tree li span.GeocodeServer {
-    background-color:#FFFDD3;
+.GeocodeServer {
+    background-color:#FAF884;
+    
 }
 
-.tree li span.GeocodeServer:hover {
-    background-color:#FFFEE6;
+.GeocodeServer:hover {
+    background-color:#FAF884;
 }
 
-.tree li span.MapServer {
-    background-color:#CEE0F5;
+.MapServer {
+    background-color:#FEA3AA;
 }
 
-.tree li span.MapServer:hover {
-    background-color:#E4EFFB;
+.MapServer:hover {
+    background-color:#FEA3AA;
 }
 
-.tree li span.GPServer {
-    background-color:#CBF5E8;
+.GPServer {
+    background-color:#F2A2E8;
 }
 
-.tree li span.GPServer:hover {
-    background-color:#E2FBF4;
+.GPServer:hover {
+    background-color:#F2A2E8;
 }
 
-.tree li span.MapServer_Tiled {
-    background-color:#FFD5D3;
+.MapServer_Tiled {
+    background-color:#F8B88B;
 }
 
-.tree li span.MapServer_Tiled:hover {
-    background-color:#FFE7E6;
+.MapServer_Tiled:hover {
+    background-color:#F8B88B;
 }
 
-.tree li span.ImageServer {
-    background-color:#CBF6E6;
+.ImageServer {
+    background-color:#B2CEFE;
 }
 
-.tree li span.ImageServer:hover {
-    background-color:#E2FBF2;
+.ImageServer:hover {
+    background-color:#B2CEFE;
 }
 
-.tree li span.FeatureServer {
-    background-color:#CBF6E6;
+.FeatureServer {
+    background-color:#BAED91;
 }
 
-.tree li span.FeatureServer:hover {
-    background-color:#E2FBF2;
+.FeatureServer:hover {
+    background-color:#BAED91;
+}
+.legend{
+    height:15px;
+    width:25px;
+    border-radius:5px;
+    float:left;
 }

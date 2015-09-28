@@ -1,60 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta charset="utf-8">
-		<title>AGS Scraper</title>
-		<meta name="generator" content="Bootply" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-		<link href="css/styles.css" rel="stylesheet">
-	</head>
-	<body>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>AGS Scraper</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
 
-<div class="container">
-<h1>ArcGIS Server Meta Surfer</h1>
-
-
-<legend>Enter REST endpoint URL</legend>
-
-<!-- Prepended text-->
-<div class="form-group">
-    <div class="col-md-8">
-        <div class="input-group">
-            <span class="input-group-addon">AGS URL</span>
-            <input id="txtURL" value='http://gis.clark.wa.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
+<body>
+    <div class="container">
+        <h1>ArcGIS Server Meta Surfer</h1>
+        <legend>Enter REST endpoint URL</legend>
+        <!-- Prepended text-->
+        <div class='row'>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon">AGS URL</span>
+                    <input id="txtURL" value='http://gis.clark.wa.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+        </div>
+ 
+        <div class='row'>
+        <br/>
+           <table class='table'>
+           <tr><td>
+                <div class='legend MapServer'></div></td><td>
+                MapServer</td>            
+           <td>
+                <div class='legend MapServer_Tiled'></div></td><td>
+                    Map Server - Tiles</td><td>
+           
+                <div class='legend GeocodeServer'></div></td><td>
+                    GeocodeServer</td>
+                    <td>
+              
+                <div class='legend FeatureServer'></div></td><td>
+                    FeatureServer
+               </td> <td>
+              
+                <div class='legend ImageServer'></div></td><td>
+                    ImageServer
+               </td> <td>
+              
+                <div class='legend GPServer'></div></td><td>
+                    GPServer
+               </td>
+               </tr>
+               </table>
+        </div>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<div class='row'>
-    <div class='md-col-12'>
-        <div id='tree'></div>
-    </div>
-</div>
-
-<div class='row'>
-<div class='md-col-12'>
-<ul>
-<li>Washington County, OR <a class='inputs'>http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/</a></li>
-<li>Multnomah County, OR <a class='inputs'>http://www3.multco.us/arcgispublic/rest/services</a></li>
-<li>Clackamas County, OR <a class='inputs'></a></li>
-<li>City of Portland, OR <a class='inputs'>https://www.portlandmaps.com/arcgis/rest/services/</a></li>
-<li>Clark County, WA <a class='inputs'>http://gis.clark.wa.gov/arcgis/rest/services/</a></li>
-<li>Oregon Metro <a class='inputs'>http://gis.oregonmetro.gov/ArcGIS/rest/services/</a></li>
-<li>City of Gresham, OR <a class='inputs'>http://maps.greshamoregon.gov/arcgis/rest/services/</a></li>
-<li>Portland Public Schools <a class='inputs'>https://arcgis.pps.net/arcgis/rest/services/</a></li>
-</ul>
-
-</div>
-</div>
+        <div class='row'>
+            <div class='md-col-12'>
+                <div id='tree'></div>
+            </div>
+        </div>
+        <div class='row'>
+        <br/>
+            <div class='md-col-12'>
+                <ul>
+                    <li>Washington County, OR <a class='inputs'>http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/</a></li>
+                    <li>Multnomah County, OR <a class='inputs'>http://www3.multco.us/arcgispublic/rest/services</a></li>
+                    <li>Clackamas County, OR
+                        <a class='inputs'></a>
+                    </li>
+                    <li>City of Portland, OR <a class='inputs'>https://www.portlandmaps.com/arcgis/rest/services/</a></li>
+                    <li>Clark County, WA <a class='inputs'>http://gis.clark.wa.gov/arcgis/rest/services/</a></li>
+                    <li>Oregon Metro <a class='inputs'>http://gis.oregonmetro.gov/ArcGIS/rest/services/</a></li>
+                    <li>City of Gresham, OR <a class='inputs'>http://maps.greshamoregon.gov/arcgis/rest/services/</a></li>
+                    <li>Portland Public Schools <a class='inputs'>https://arcgis.pps.net/arcgis/rest/services/</a></li>
+                </ul>
+            </div>
+        </div>
 
 	<!-- script references -->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -65,6 +88,7 @@
     <script>
 
     var root_url = "";
+
     var tree = [];
 
     $('#txtURL').on('keydown', function(e) {
@@ -87,46 +111,55 @@
 
     			$.getJSON(root_url + '?f=json').then(function(data) {
 
-    				var root_defs = [];
+    				
 
-    				var core = {text:'root', nodes:[]};
+    				var core = {
+    					text: 'root',
+    					nodes: []
+    				};
 
-    				root_defs.push(processFolders(data.folders, core));
+                    var root_defs = [];
 
-    				root_defs.push(processServices(data.services, core));
+                    if(typeof data.folders != 'undefined'){
+    				    root_defs.push(processFolders(data.folders, core));
+                    }
+
+                    if(typeof data.services != 'undefined'){
+    				    root_defs.push(processServices(data.services, core));
+                    }
 
     				$.when.apply(null, root_defs).done(function() {
 
     					//recursive alphabetize
-    					function compare(a,b) {
-						  if (a.text.toLowerCase() < b.text.toLowerCase())
-						    return -1;
-						  if (a.text.toLowerCase() > b.text.toLowerCase())
-						    return 1;
-						  return 0;
-						}
+    					function compare(a, b) {
+    						if (a.text.toLowerCase() < b.text.toLowerCase())
+    							return -1;
+    						if (a.text.toLowerCase() > b.text.toLowerCase())
+    							return 1;
+    						return 0;
+    					}
 
-						tree.sort(compare);
+    					tree.sort(compare);
 
     					var htm = '<div class="tree well"><ul>';
     					for (var i = 0; i < tree.length; i++) {
-    						htm += '<li><span class="'+tree[i].type +'"><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
+    						htm += '<li><span class="' + tree[i].type + '"><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
     						htm += makeTree(tree[i]);
-    						htm+='</li>';
+    						htm += '</li>';
     					}
 
     					htm += '</ul></div>';
 
     					$('#tree').empty().append(htm);
 
-              $('.tree').prepend('<button class="btn btn-primary" id="btnCollapseAll">Collapse All</button>');
+    					$('.tree').prepend('<button class="btn btn-default" id="btnCollapseAll">Collapse All</button>');
 
-              $("#btnCollapseAll").on('click', function(){
-                var children = $('li.parent_li').find(' > ul > li');
-                if (children.is(":visible")) {
-                  children.hide('fast');
-                }
-              });
+    					$("#btnCollapseAll").on('click', function() {
+    						var children = $('li.parent_li').find(' > ul > li');
+    						if (children.is(":visible")) {
+    							children.hide('fast');
+    						}
+    					});
 
     					$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
     					$('.tree li.parent_li > span').on('click', function(e) {
@@ -150,168 +183,175 @@
     	}
     });
 
-    function makeTree(branch){
+    function makeTree(branch) {
 
-      var html="<ul>";
+    	var html = "<ul>";
 
-        for (var j=0;j<branch.nodes.length;j++){
+    	for (var j = 0; j < branch.nodes.length; j++) {
 
-          if(typeof branch.nodes[j].nodes != 'undefined'){
-            html+= '<li><span class="'+branch.nodes[j].type +'"><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
-            html+= makeTree(branch.nodes[j]);
-            html += '</li>';
-          } else {
-            html+='<li><span class="'+branch.nodes[j].type +'"><i class="icon-minus-sign"></i><a href="'+branch.nodes[j].url+'" target="_blank">'+branch.nodes[j].text+"</a> </span></li>";
-          }
-        }
+    		if (typeof branch.nodes[j].nodes != 'undefined') {
+    			html += '<li><span class="' + branch.nodes[j].type + '"><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
+    			html += makeTree(branch.nodes[j]);
+    			html += '</li>';
+    		} else {
+    			html += '<li><span class="' + branch.nodes[j].type + '"><i class="icon-minus-sign"></i><a href="' + branch.nodes[j].url + '" target="_blank">' + branch.nodes[j].text + "</a> </span></li>";
+    		}
+    	}
 
-        html+='</ul>';
+    	html += '</ul>';
 
-        return html;
+    	return html;
     }
 
-    function processFolders(folders){
+    function processFolders(folders) {
 
-      var def = $.Deferred();
+    	var def = $.Deferred();
 
-      var deferreds = [];
+    	var deferreds = [];
 
-      $.each(folders, function(i,v){
+    	$.each(folders, function(i, v) {
 
-      	var _branch = {text:v, nodes:[]};
+    		var _branch = {
+    			text: v,
+    			nodes: []
+    		};
 
-		var promise = function() {
+    		var promise = function() {
 
-			var nested_deferred = $.Deferred();
+    			var nested_deferred = $.Deferred();
 
-			$.getJSON(root_url + v + '/?f=json').then(function(data) {
+    			$.getJSON(root_url + v + '/?f=json').then(function(data) {
 
-				var froot_defs = [
-					processFolders(data.folders),
-					processServices(data.services, _branch)
-					];
+    				var froot_defs = [
+    					processFolders(data.folders),
+    					processServices(data.services, _branch)
+    				];
 
-				$.when.apply(null, froot_defs).done(function() {
-					nested_deferred.resolve();
-				});
-			});
+    				$.when.apply(null, froot_defs).done(function() {
+    					nested_deferred.resolve();
+    				});
+    			});
 
-			return nested_deferred.promise();
-		}();
+    			return nested_deferred.promise();
+    		}();
 
-        promise.done(function(){});
+    		promise.done(function() {});
 
-        deferreds.push(promise);
+    		deferreds.push(promise);
 
-      });
+    	});
 
-      $.when.apply(null, deferreds).done(function() {
-        def.resolve();
-      });
+    	$.when.apply(null, deferreds).done(function() {
+    		def.resolve();
+    	});
 
-      return def.promise();
+    	return def.promise();
     }
 
-    function processServices(services, branch){
-  
-      var def = $.Deferred();
+    function processServices(services, branch) {
 
-      var deferreds = [];
+    	var def = $.Deferred();
 
-      $.each(services, function(i, v) {
+    	var deferreds = [];
 
-        if (v.type == 'MapServer') {
+    	$.each(services, function(i, v) {
 
-			var promise = function() {
+    		if (v.type == 'MapServer' || v.type== 'FeatureServer') {
 
-				var nested_deferred = $.Deferred();
+    			var promise = function() {
 
-				$.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
-	              var url = root_url + v.name + '/' + v.type+'/';
-	              var s=serviceHelper(v, data, url, branch.text);
-	              nested_deferred.resolve(s);
-	            });
+    				var nested_deferred = $.Deferred();
 
-				return nested_deferred.promise();
-			}();
+    				$.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
+    					var url = root_url + v.name + '/' + v.type + '/';
+    					var s = serviceHelper(v, data, url, branch.text);
+    					nested_deferred.resolve(s);
+    				});
 
-	        deferreds.push(promise);
-          }else  {
-          	branch.nodes.push({text:v.name, type:v.type, url: root_url + v.name + '/' + v.type+'/'});
-          }
-      });
+    				return nested_deferred.promise();
+    			}();
 
-      $.when.apply(null, deferreds).done(function() {
-      	
-      	$.each(arguments,function(i,v){
-      		if(branch.text=='root'){
-      			tree.push(v);
-      		}else{
-	      		branch.nodes.push(v);
-	      	}
-      	});
-      	if(branch.text!='root'){
-	      	tree.push(branch);
-	      }
-        def.resolve();
-      });
+    			deferreds.push(promise);
+    		} else {
+    			branch.nodes.push({
+    				text: v.name,
+    				type: v.type,
+    				url: root_url + v.name + '/' + v.type + '/'
+    			});
+    		}
+    	});
 
-      return def.promise();
+    	$.when.apply(null, deferreds).done(function() {
+
+    		$.each(arguments, function(i, v) {
+    			if (branch.text == 'root') {
+    				tree.push(v);
+    			} else {
+    				branch.nodes.push(v);
+    			}
+    		});
+    		if (branch.text != 'root') {
+    			tree.push(branch);
+    		}
+    		def.resolve();
+    	});
+
+    	return def.promise();
     }
 
     function serviceHelper(v, data, url, branch) {
 
-      var cat = {
-        text: v.name.replace(branch+'/',''),
-        type: (typeof data.tileInfo =='undefined') ? "MapServer" : "MapServer_Tiled",
-        nodes: []
-      };
+    	var cat = {
+    		text: v.name.replace(branch + '/', ''),
+    		type: (typeof data.tileInfo == 'undefined') ? v.type : "MapServer_Tiled",
+    		nodes: []
+    	};
 
-      $.each(data.layers, function(_i, _v) {
+    	$.each(data.layers, function(_i, _v) {
 
-        if (_v.subLayerIds != null) {
-          var group = {
-            text: _v.name,
-            type: v.type,
-            nodes: []
-          };
+    		if (_v.subLayerIds != null) {
+    			var group = {
+    				text: _v.name,
+    				type: v.type,
+    				nodes: []
+    			};
 
-          $.each(_v.subLayerIds, function(__i, __v) {
+    			$.each(_v.subLayerIds, function(__i, __v) {
 
-            try {
+    				try {
 
-              var lyr = $.grep(data.layers, function(a){
-                return a.id == __v;
-              })[0];
+    					var lyr = $.grep(data.layers, function(a) {
+    						return a.id == __v;
+    					})[0];
 
-              group.nodes.push({
-                text: lyr.name,
-                url: url,
-                type: v.type,
-                layer: __v
-              });
-            } catch (ex) {
-            	console.log('ouch');
-            }
-          });
-          cat.nodes.push(group);
-        }
+    					group.nodes.push({
+    						text: lyr.name,
+    						url: url,
+    						type: v.type,
+    						layer: __v
+    					});
+    				} catch (ex) {
+    					console.log('ouch');
+    				}
+    			});
+    			cat.nodes.push(group);
+    		}
 
-        if (_v.parentLayerId == -1 && _v.subLayerIds == null) {
-          cat.nodes.push({
-            text: _v.name,
-            layer: _i,
-            type: v.type,
-            url: url
-          });
-        }
-      });
+    		if (_v.parentLayerId == -1 && _v.subLayerIds == null) {
+    			cat.nodes.push({
+    				text: _v.name,
+    				layer: _i,
+    				type: v.type,
+    				url: url
+    			});
+    		}
+    	});
 
-      return cat;
+    	return cat;
     }
 
- function validateURL(value){
-      return false || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    function validateURL(value) {
+    	return false || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
     </script>
 

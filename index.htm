@@ -23,7 +23,7 @@
     <div class="col-md-8">
         <div class="input-group">
             <span class="input-group-addon">AGS URL</span>
-            <input id="txtURL" value='https://www.portlandmaps.com/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
+            <input id="txtURL" value='http://gis.clark.wa.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
         </div>
     </div>
 </div>
@@ -70,7 +70,9 @@
     $('#txtURL').on('keydown', function(e) {
     	var code = e.keyCode || e.which;
     	if (code == 13) {
+
     		tree = [];
+
     		if (validateURL($(this).val())) {
 
     			root_url = $(this).val();
@@ -87,17 +89,19 @@
 
     				var root_defs = [];
 
-    				root_defs.push(processFolders(data.folders));
+    				var core = {text:'root', nodes:[]};
 
-    				root_defs.push(processServices(data.services));
+    				root_defs.push(processFolders(data.folders, core));
+
+    				root_defs.push(processServices(data.services, core));
 
     				$.when.apply(null, root_defs).done(function() {
-    					
+
     					//recursive alphabetize
     					function compare(a,b) {
-						  if (a.text < b.text)
+						  if (a.text.toLowerCase() < b.text.toLowerCase())
 						    return -1;
-						  if (a.text > b.text)
+						  if (a.text.toLowerCase() > b.text.toLowerCase())
 						    return 1;
 						  return 0;
 						}
@@ -153,11 +157,11 @@
         for (var j=0;j<branch.nodes.length;j++){
 
           if(typeof branch.nodes[j].nodes != 'undefined'){
-            html+= '<li><span><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
+            html+= '<li><span class="'+branch.nodes[j].type +'"><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
             html+= makeTree(branch.nodes[j]);
             html += '</li>';
           } else {
-            html+='<li><span><i class="icon-minus-sign"></i><a href="'+branch.nodes[j].url+'" target="_blank">'+branch.nodes[j].text+"</a> </span></li>";
+            html+='<li><span class="'+branch.nodes[j].type +'"><i class="icon-minus-sign"></i><a href="'+branch.nodes[j].url+'" target="_blank">'+branch.nodes[j].text+"</a> </span></li>";
           }
         }
 
@@ -174,21 +178,26 @@
 
       $.each(folders, function(i,v){
 
-        var promise = function(){
-          var nested_deferred = $.Deferred();
+      	var _branch = {text:v, nodes:[]};
 
-          $.getJSON(root_url+v+'/?f=json').then(function(data){
-            var froot_defs= [];
-            froot_defs.push(processFolders(data.folders));
-            froot_defs.push(processServices(data.services));
+		var promise = function() {
 
-            $.when.apply(null, froot_defs).done(function() {
-              nested_deferred.resolve();
-            });
-          });
+			var nested_deferred = $.Deferred();
 
-          return nested_deferred.promise();
-        }();
+			$.getJSON(root_url + v + '/?f=json').then(function(data) {
+
+				var froot_defs = [
+					processFolders(data.folders),
+					processServices(data.services, _branch)
+					];
+
+				$.when.apply(null, froot_defs).done(function() {
+					nested_deferred.resolve();
+				});
+			});
+
+			return nested_deferred.promise();
+		}();
 
         promise.done(function(){});
 
@@ -197,14 +206,14 @@
       });
 
       $.when.apply(null, deferreds).done(function() {
-         def.resolve();
+        def.resolve();
       });
 
       return def.promise();
     }
 
-    function processServices(services){
-
+    function processServices(services, branch){
+  
       var def = $.Deferred();
 
       var deferreds = [];
@@ -212,103 +221,48 @@
       $.each(services, function(i, v) {
 
         if (v.type == 'MapServer') {
-          deferreds.push(
-            $.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
-              var url = root_url + v.name + '/' + v.type+'/';
-              serviceHelper(v, data, url);
-            })
-          );
-        } else if(v.type =='GeocodeServer'){
-          var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='GPServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='ImageServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='GeometryServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='ImageServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='MobileServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='IndexingLauncher'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='SearchServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='IndexGenerator'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        } else if(v.type=='FeatureServer'){
-           var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        }else { 
-          var cat = {
-            text: v.name,
-            type: v.type,
-            nodes: []
-          };
-          tree.push(cat);
-        }
+
+			var promise = function() {
+
+				var nested_deferred = $.Deferred();
+
+				$.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
+	              var url = root_url + v.name + '/' + v.type+'/';
+	              var s=serviceHelper(v, data, url, branch.text);
+	              nested_deferred.resolve(s);
+	            });
+
+				return nested_deferred.promise();
+			}();
+
+	        deferreds.push(promise);
+          }else  {
+          	branch.nodes.push({text:v.name, type:v.type, url: root_url + v.name + '/' + v.type+'/'});
+          }
       });
 
       $.when.apply(null, deferreds).done(function() {
-          def.resolve();
+      	
+      	$.each(arguments,function(i,v){
+      		if(branch.text=='root'){
+      			tree.push(v);
+      		}else{
+	      		branch.nodes.push(v);
+	      	}
+      	});
+      	if(branch.text!='root'){
+	      	tree.push(branch);
+	      }
+        def.resolve();
       });
 
       return def.promise();
     }
 
-    function serviceHelper(v, data, url) {
-      //tree.push({text:'root', nodes:[]}
+    function serviceHelper(v, data, url, branch) {
+
       var cat = {
-        text: v.name,
+        text: v.name.replace(branch+'/',''),
         type: (typeof data.tileInfo =='undefined') ? "MapServer" : "MapServer_Tiled",
         nodes: []
       };
@@ -318,6 +272,7 @@
         if (_v.subLayerIds != null) {
           var group = {
             text: _v.name,
+            type: v.type,
             nodes: []
           };
 
@@ -332,14 +287,11 @@
               group.nodes.push({
                 text: lyr.name,
                 url: url,
-                type: "MapServer",
+                type: v.type,
                 layer: __v
               });
             } catch (ex) {
-              console.log(_v);
-              console.log(url);
-              console.log(__v);
-              console.log(data.layers[__v]);
+            	console.log('ouch');
             }
           });
           cat.nodes.push(group);
@@ -349,13 +301,13 @@
           cat.nodes.push({
             text: _v.name,
             layer: _i,
-            type:"MapServer",
+            type: v.type,
             url: url
           });
         }
       });
 
-      tree.push(cat);
+      return cat;
     }
 
  function validateURL(value){

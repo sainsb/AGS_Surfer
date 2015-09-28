@@ -55,7 +55,7 @@
     height:30px
 }
 .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
-    background:#eee;
+    
     border:1px solid #94a0b4;
     color:#000
 }
@@ -97,5 +97,13 @@
 }
 
 .tree li span.ImageServer:hover {
+    background-color:#E2FBF2;
+}
+
+.tree li span.FeatureServer {
+    background-color:#CBF6E6;
+}
+
+.tree li span.FeatureServer:hover {
     background-color:#E2FBF2;
 }

@@ -8,123 +8,10 @@
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet">
-    <style>
-    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
-body {
-  font-family: "Open Sans";
-}
-
-.wrap {
-  width: 250px;
-  text-align: center;
-  position: absolute;
-  margin-top:30px;
-  left: 50%;
-  margin-left: -125px;
-  font-size:45px;
-  display:none;
-}
-.wrap div {
-  display: inline;
-  margin: -2px;
-}
-
-.l {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 0s;
-          animation-delay: 0s;
-}
-
-.o {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 0.21875s;
-          animation-delay: 0.21875s;
-}
-
-.a {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 0.4375s;
-          animation-delay: 0.4375s;
-}
-
-.d {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 0.65625s;
-          animation-delay: 0.65625s;
-}
-
-.i {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 0.875s;
-          animation-delay: 0.875s;
-}
-
-.n {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 1.09375s;
-          animation-delay: 1.09375s;
-}
-
-.g {
-  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
-          animation: shrinkgrow 1.75s ease-in-out infinite;
-  -webkit-animation-delay: 1.3125s;
-          animation-delay: 1.3125s;
-}
-
-@-webkit-keyframes shrinkgrow {
-  0% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  12.5% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  25% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  33% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  100% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-}
-
-@keyframes shrinkgrow {
-  0% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  12.5% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  25% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  33% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  100% {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-}
-</style>
+    
 </head>
 
 <body>
@@ -180,6 +67,11 @@ body {
            
                 <div class='legend GeocodeServer'></div></td><td>
                     GeocodeServer</td>
+
+                    <td>
+               <div class='legend GeometryServer'></div></td><td>
+                    GeometryServer
+               </td>
                     <td>
               
                 <div class='legend FeatureServer'></div></td><td>
@@ -229,7 +121,7 @@ body {
     	["USGS - EROS"  ,"http://isse.cr.usgs.gov/ArcGIS/rest/services"],
     	["Surdex Inc."  ,"http://cpat.surdex.com/ArcGIS/rest/services"],
     	["Indiana State University"  ,"http://129.79.145.13/ArcGIS/rest/services"],
-    	["State of California"  ,"http://atlas.resources.ca.gov/ArcGIS/rest/services"],
+    	//["State of California"  ,"http://atlas.resources.ca.gov/ArcGIS/rest/services"],
     	["EPA"  ,"http://geodata.epa.gov/arcgis/rest/services"],
     	["USDA"  ,"http://gis.apfo.usda.gov/ArcGIS/rest/services"],
     	["State of Oregon"  ,"http://navigator.state.or.us/ArcGIS/rest/services"],
@@ -298,10 +190,10 @@ body {
     			}
 
     			if (root_url.indexOf("?f=json") != -1) {
-    				root_url = root_url.replace('?f=json', '');
+    				root_url = root_url.replace('?f=pjson', '');
     			}
 
-    			$.getJSON(root_url + '?f=json').then(function(data) {
+                $.ajax(root_url + '?f=pjson', {dataType: "jsonp"}).then(function(data) {
 
     				var core = {
     					text: 'root',
@@ -311,7 +203,7 @@ body {
                     var root_defs = [];
 
                     if(typeof data.folders != 'undefined'){
-    				    root_defs.push(processFolders(data.folders, core));
+    				    root_defs.push(processFolders(data.folders));
                     }
 
                     if(typeof data.services != 'undefined'){
@@ -412,7 +304,7 @@ body {
 
     			var nested_deferred = $.Deferred();
 
-    			$.getJSON(root_url + v + '/?f=json').then(function(data) {
+                $.ajax(root_url + v + '/?f=pjson', {dataType: "jsonp"}).then(function(data) {
 
     				var froot_defs = [
     					processFolders(data.folders),
@@ -454,11 +346,11 @@ body {
 
     				var nested_deferred = $.Deferred();
 
-    				$.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
+    				$.ajax(root_url + v.name + '/' + v.type + '/?f=pjson',{dataType: 'jsonp', success: function(data) {
     					var url = root_url + v.name + '/' + v.type + '/';
     					var s = serviceHelper(v, data, url, branch.text);
     					nested_deferred.resolve(s);
-    				});
+    				}});
 
     				return nested_deferred.promise();
     			}();

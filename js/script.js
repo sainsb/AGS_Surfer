@@ -63,11 +63,11 @@
 
                 }}); 
     
-    $input.change(function() {
+    function proc(){
         var current = $input.typeahead("getActive");
         if (current) {
             if (current.name == $input.val()) {
-                $($($input.parent()).parent()).removeClass('has-warning')
+                //$($($input.parent()).parent()).removeClass('has-warning')
                 $('#tree').fadeOut(100);
                 getToken(current.id).then(function(){
                     if($('#ags_token').val() != ''){
@@ -87,10 +87,10 @@
                 // or take the active if you don't want new items
                 //we assume it is a URL here.
                 if($input.val() == ''){ return;}
-                if(!validateURL($input.val())){
-                    $($($input.parent()).parent()).addClass('has-warning')
-                    return;
-                }
+                //if(!validateURL($input.val())){
+                    //$($($input.parent()).parent()).addClass('has-warning')
+                    //return;
+               // }
 
                 getToken($input.val()).then(function(){
                     if($('#ags_token').val() != ''){
@@ -117,7 +117,6 @@
                             })
                         })
                     } else{
-                        console.log('here I am ')
                         go($input.val()).then(function(tree){
                             update(format(tree, token));
                         }); 
@@ -129,10 +128,10 @@
             // Nothing is active so it is a new value (or maybe empty value)
              if($input.val() == ''){ return;}
 
-                if(!validateURL($input.val())){
-                    $($($input.parent()).parent()).addClass('has-warning')
-                    return;
-                }
+                //if(!validateURL($input.val())){
+                  //  $($($input.parent()).parent()).addClass('has-warning')
+                   // return;
+                //}
 
                 $('#tree').fadeOut(100);
                 getToken($input.val()).then(function(){
@@ -160,14 +159,21 @@
                             })
                         })
                     } else{
-                        console.log('here I am ')
                         go($input.val()).then(function(tree){
                             update(format(tree, token));
                         }); 
                     }
                 })
-
         }
+    }
+
+    $('#btnSearch').on('click', function(){
+        proc();
+    })
+
+    $input.change(function() {
+        proc();
+
     });
 
     $username.change(function(){
@@ -183,7 +189,7 @@
         var d = $.Deferred();
 
         //get user and password
-        if(validateURL(url)){
+        //if(validateURL(url)){
 
             //validate user and pass
 
@@ -203,7 +209,7 @@
             } else {
                 d.resolve();
             }
-        }
+        //}
         return d.promise();
 
     }
@@ -633,6 +639,3 @@
     	return cat;
     }
 
-    function validateURL(value) {
-    	return false || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
-    }

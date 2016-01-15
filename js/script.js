@@ -71,7 +71,7 @@
                 $('#tree').fadeOut(100);
                 getToken(current.id).then(function(){
                     if($('#ags_token').val() != ''){
-                            token = $('#ags_token').val();
+                        token = $('#ags_token').val();
                         go(current.id, token).then(function(tree){
                             update(format(tree, token));
                         })
@@ -96,6 +96,12 @@
                     if($('#ags_token').val() != ''){
                         var url = $input.val().replace('rest', 'admin'),
                             token = $('#ags_token').val();
+
+                        if(url.indexOf('localhost') > -1){
+                            url.replace("localhost", 'localhost:6080')
+                        }
+
+
                         go(url, token).then(function(atree){
                             go($input.val(), token).then(function(btree){
                                 for (var a in atree) {
@@ -198,10 +204,10 @@
 
             if(username != '' && password != ''){
 
-            var url = url.toUpperCase().replace('REST/SERVICES', '');
+            var url = url.toUpperCase().replace('/REST/SERVICES', '');
+            url = url.toLowerCase();
             
-                $.getJSON(url+'tokens/generateToken?username='+username+'&password='+password+'&expiration=10&f=pjson')
-                .then(function(token){
+            $.post(url+'tokens/generateToken', 'username='+username+'&password='+password+'&expiration=10&f=pjson').then(function(token){
                     console.log(token)
                     $('#ags_token').val(token.token)
                     d.resolve();

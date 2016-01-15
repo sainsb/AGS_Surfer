@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ![Sample Image] ()
 
+
+v0.0.3 - 2016-01-15
+===================
+- Added support for authentication to show admin type stuff.
+- Added some icons
+- Reconfigured build to support bower-less environments
+
+## Todo
+- Connect to Admin REST interface to support log parsing/viz.
+
 v0.0.2 - 2015-9-28
 ==================
 

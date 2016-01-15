@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "bootstrap-treeview": "~1.2.0",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master"
   }
 }

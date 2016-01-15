@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>AGS Scraper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="css/vendor/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class='row'>
+            <div class='col-md-6'>
+                <h1>ArcGIS Server Meta Surfer</h1>
+                <legend>Enter REST endpoint URL</legend>
+            </div>
+            <div class='col-md-6'>
+                <div class="wrap">
+                    <div class="l">L</div>
+                    <div class="o">O</div>
+                    <div class="a">A</div>
+                    <div class="d">D</div>
+                    <div class="i">I</div>
+                    <div class="n">N</div>
+                    <div class="g">G</div>
+                </div>
+            </div>
+        </div>
+        <div class='row' style=''>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">AGS URL</span>
+                    <input id="ta" class="form-control" placeholder="Enter an organization or an AGS URL" type="text" value='http://dev.gartrellgroup.com/ArcGIS/rest/services'>
+                    <!-- http://dev.gartrellgroup.com/ArcGIS/rest/services -->
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style='float:right;color:#80C0FF;font-size:11px'>
+                            <i>Advanced</i>
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+                            <input style="display:none" type="text" name="fakeusernameremembered" />
+                            <input style="display:none" type="password" name="fakepasswordremembered" />
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">User</span>
+                                    <input class="form-control" placeholder="User" type="text" value='' id='userName'>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Pass</span>
+                                    <input id="password" value='' type='password' class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <!--    <div class="form-group">
+                             <a class='btn btn-primary' id='btnGetTokens'></a>
+                             </div> -->
+                            <!--  <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">AGS User Token</span>
+                                        
+                                    </div>
+                            </div> -->
+                            <input id="ags_token" class="form-control" placeholder="Enter ArcGIS Server user token here" type="hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='md-col-12'>
+                <div id='tree'></div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <table class='table'>
+                    <tr>
+                        <td>
+                            <div class='legend MobileServer'></div>
+                        </td>
+                        <td>
+                            MobileServer</td>
+                        <td>
+                            <div class='legend MapServer'></div>
+                        </td>
+                        <td>
+                            MapServer</td>
+                        <td>
+                            <div class='legend MapServer_Tiled'></div>
+                        </td>
+                        <td>
+                            Map Server - Tiles</td>
+                        <td>
+                            <div class='legend GeocodeServer'></div>
+                        </td>
+                        <td>
+                            GeocodeServer</td>
+                        <td>
+                            <div class='legend GeometryServer'></div>
+                        </td>
+                        <td>
+                            GeometryServer
+                        </td>
+                        <td>
+                            <div class='legend FeatureServer'></div>
+                        </td>
+                        <td>
+                            FeatureServer
+                        </td>
+                        <td>
+                            <div class='legend ImageServer'></div>
+                        </td>
+                        <td>
+                            ImageServer
+                        </td>
+                        <td>
+                            <div class='legend GPServer'></div>
+                        </td>
+                        <td>
+                            GPServer
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </footer>
+
+        <script src="js/vendor/jquery.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/bootstrap3-typeahead.min.js"></script>
+        <script src="js/script.js"></script>
+</body>
+
+</html>

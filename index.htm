@@ -5,439 +5,154 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>AGS Scraper</title>
-    <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="css/vendor/bootstrap.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <link href="css/styles.css" rel="stylesheet">
-    
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+    .bias-input-group .input-group-addon + .input-group-btn > .btn {border-radius: 0;}
+.bias-input-group .input-group-addon + .input-group-btn + .input-group-addon {border-right: 0; border-left: 0;}
+    </style>
 </head>
 
 <body>
     <div class="container">
-    <div class='row'>
-    <div class='col-md-6'>
-    <h1>ArcGIS Server Meta Surfer</h1>
-        <legend>Enter REST endpoint URL</legend>
-    </div>
-    <div class='col-md-6'>
-
-                    <div class="wrap">
-                      <div class="l">L</div>
-                      <div class="o">O</div>
-                      <div class="a">A</div>
-                      <div class="d">D</div>
-                      <div class="i">I</div>
-                      <div class="n">N</div>
-                      <div class="g">G</div>
+        <div class='row'>
+            <div class='col-md-6'>
+                <h1>ArcGIS Server Meta Surfer</h1>
+                <legend>Enter REST endpoint URL</legend>
+            </div>
+            <div class='col-md-6'>
+                <div class="wrap">
+                    <div class="l">L</div>
+                    <div class="o">O</div>
+                    <div class="a">A</div>
+                    <div class="d">D</div>
+                    <div class="i">I</div>
+                    <div class="n">N</div>
+                    <div class="g">G</div>
+                </div>
+            </div>
+        </div>
+        <div class='row' style=''>
+            <div class="form-group">
+                <div class="input-group bias-input-group">
+                   <span class="input-group-addon">AGS URL</span>
+                    
+                    <input id="ta" class="form-control" placeholder="Enter an organization or an AGS URL" type="text" value='http://dev.gartrellgroup.com/ArcGIS/rest/services'/>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary" id='btnSearch'>
+                        <i class='glyphicon glyphicon-search'></i> Search
+                 
+                            </button>
                     </div>
-     
-    </div>
-    </div>
-        
-        <!-- Prepended text-->
-        <div class='row'>
-        <div class="form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">AGS URL</span>
-                    <input id="txtURL" value='http://gis.clark.wa.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">AGS URL</span>
-                    <select id="selService"  class="form-control">
-                    </select>
                 </div>
             </div>
         </div>
-        </div>
- 
         <div class='row'>
-        <br/>
-           <table class='table'>
-           <tr><td>
-                <div class='legend MapServer'></div></td><td>
-                MapServer</td>            
-           <td>
-                <div class='legend MapServer_Tiled'></div></td><td>
-                    Map Server - Tiles</td><td>
-           
-                <div class='legend GeocodeServer'></div></td><td>
-                    GeocodeServer</td>
-
-                    <td>
-               <div class='legend GeometryServer'></div></td><td>
-                    GeometryServer
-               </td>
-                    <td>
-              
-                <div class='legend FeatureServer'></div></td><td>
-                    FeatureServer
-               </td> <td>
-              
-                <div class='legend ImageServer'></div></td><td>
-                    ImageServer
-               </td> <td>
-              
-                <div class='legend GPServer'></div></td><td>
-                    GPServer
-               </td>
-               </tr>
-               </table>
-        </div>
-		<div class='row'>
-        	<br/>
-            
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style='float:right;color:#80C0FF;font-size:11px'>
+                            <i>Advanced</i>
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+                            <input style="display:none" type="text" name="fakeusernameremembered" />
+                            <input style="display:none" type="password" name="fakepasswordremembered" />
+                            <p>
+                            <i style='color:#555;font-size:12px'>Enter credentials to expose additional details about ArcGIS Server instance...</i></p>
+                            <div class="form-group col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">User</span>
+                                    <input class="form-control" placeholder="User" type="text" value='' id='userName'>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Pass</span>
+                                    <input id="password" value='' type='password' class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <!--    <div class="form-group">
+                             <a class='btn btn-primary' id='btnGetTokens'></a>
+                             </div> -->
+                            <!--  <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">AGS User Token</span>
+                                        
+                                    </div>
+                            </div> -->
+                            <input id="ags_token" class="form-control" placeholder="Enter ArcGIS Server user token here" type="hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class='row'>
             <div class='md-col-12'>
                 <div id='tree'></div>
             </div>
         </div>
-        
+        <footer class="footer">
+            <div class="container">
+                <table class='table'>
+                    <tr>
+                        <td>
+                            <div class='legend MobileServer'></div>
+                        </td>
+                        <td>
+                            MobileServer</td>
+                        <td>
+                            <div class='legend MapServer'></div>
+                        </td>
+                        <td>
+                            MapServer</td>
+                        <td>
+                            <div class='legend MapServer_Tiled'></div>
+                        </td>
+                        <td>
+                            Map Server - Tiles</td>
+                        <td>
+                            <div class='legend GeocodeServer'></div>
+                        </td>
+                        <td>
+                            GeocodeServer</td>
+                        <td>
+                            <div class='legend GeometryServer'></div>
+                        </td>
+                        <td>
+                            GeometryServer
+                        </td>
+                        <td>
+                            <div class='legend FeatureServer'></div>
+                        </td>
+                        <td>
+                            FeatureServer
+                        </td>
+                        <td>
+                            <div class='legend ImageServer'></div>
+                        </td>
+                        <td>
+                            ImageServer
+                        </td>
+                        <td>
+                            <div class='legend GPServer'></div>
+                        </td>
+                        <td>
+                            GPServer
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </footer>
+
+        <script src="js/vendor/jquery.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/bootstrap3-typeahead.min.js"></script>
+        <script src="js/script.js"></script>
+</body>
 
-	<!-- script references -->
-		<script src="bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-   <!-- https://jsfiddle.net/jhfrench/GpdgF/ -->
-
-    <script>
-
-    var services = [
-    	["",""],
-    	["Portland Public Schools", "https://arcgis.pps.net/arcgis/rest/services/"],
-    	["City of Gresham, OR", "http://maps.greshamoregon.gov/arcgis/rest/services"],
-    	["Oregon Metro", "http://gis.oregonmetro.gov/ArcGIS/rest/services/"],
-    	["Clark County, WA",  "http://gis.clark.wa.gov/arcgis/rest/services/"],
-    	["City of Portland, OR"  ,"https://www.portlandmaps.com/arcgis/rest/services/"],
-    	["Multnomah County, OR"  ,"http://www3.multco.us/arcgispublic/rest/services"],
-    	["Washington County, OR"  ,"http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/"],
-    	["NOAA"  ,"http://gis.srh.noaa.gov/ArcGIS/rest/services"],
-    	["USGS - Geosciences"  ,"http://rmgsc.cr.usgs.gov/ArcGIS/rest/services"],
-    	["USGS - EROS"  ,"http://isse.cr.usgs.gov/ArcGIS/rest/services"],
-    	["Surdex Inc."  ,"http://cpat.surdex.com/ArcGIS/rest/services"],
-    	["Indiana State University"  ,"http://129.79.145.13/ArcGIS/rest/services"],
-    	//["State of California"  ,"http://atlas.resources.ca.gov/ArcGIS/rest/services"],
-    	["EPA"  ,"http://geodata.epa.gov/arcgis/rest/services"],
-    	["USDA"  ,"http://gis.apfo.usda.gov/ArcGIS/rest/services"],
-    	["State of Oregon"  ,"http://navigator.state.or.us/ArcGIS/rest/services"],
-    	["ESRI - ArcGIS Online"  ,"http://sampleserver1.arcgisonline.com/ArcGIS/rest/services"],
-    	["City of Lincoln, NE"  ,"http://ags.lincoln.ne.gov/ArcGIS/rest/services"],
-    	["Coeur d'Alene Tribe"  ,"http://gis.cdatribe-nsn.gov/ArcGIS/rest/services"],
-    	["US Fish and Wildlife Service"  ,"http://gis.fws.gov/ArcGIS/rest/services"],
-    	["State of Montana"  ,"http://gisservice.mt.gov/arcgis/rest/services"],
-    	["City of Washington DC"  ,"http://maps.dcgis.dc.gov/DCGIS/rest/services"],
-    	["Idaho Water Rights"  ,"http://maps.idwr.idaho.gov/ArcGIS/rest/services"],
-    	["City of New Braunfels, TX"  ,"http://maps.nbtexas.org/ArcGIS/rest/services"],
-    	["UCLA"  ,"http://maps.ucla.edu/ArcGIS/rest/services"],
-    	["ESRI - ArcGIS Online 2"  ,"http://maps1.arcgisonline.com/ArcGIS/rest/services"],
-    	["Outdoor Nebraska"  ,"http://outdoornebraska.ne.gov/ArcGIS/rest/services"],
-    	["Public Safety templates?"  ,"http://publicsafetytemplates.esri.com/ArcGIS/rest/services"],
-    	["ESRI - ArcGIS Online 3"  ,"http://sampleserver3.arcgisonline.com/arcgis/rest/services"],
-    	["ESRI - ArcGIS Online 4"  ,"http://server.arcgisonline.com/ArcGIS/rest/services"],
-    	["USDA SNAP/EBT Locator"  ,"http://www.snapretailerlocator.com/ArcGIS/rest/services"],
-    	["ESRI - ArcGIS Online 5"  ,"http://tasks.arcgisonline.com/ArcGIS/rest/services"],
-    	["National Map"  ,"http://services.nationalmap.gov/ArcGIS/rest/services"],
-    	["State of Texas"  ,"http://tnmap.tn.gov/ArcGIS/rest/services"],
-    	["NOAA Office for Coastal Management"  ,"http://www.csc.noaa.gov/arcgis/rest/services"],
-    	["Washington DC"  ,"http://www.dcgis.org/arcgis/rest/services"],
-    	["US BLM Geocommunicator"  ,"http://www.geocommunicator.gov/ArcGIS/rest/services"],
-    	["Kansas Applied Remote Sensing"  ,"http://www.kars.ku.edu/ArcGIS/rest/services"],
-    	["State of Nebraska"  ,"http://www.nebraskamap.gov/ArcGIS/rest/services"],
-    	["LA County, CA"  ,"http://gis.lacounty.gov/ArcGIS/rest/services"],
-    	["California Department of Fish and Game"  ,"http://imaps.dfg.ca.gov/arcgis/rest/services"],
-    	["California Sediment Database"  ,"http://spatialservices.conservation.ca.gov/arcgis/rest/services"],
-    	["San Diego Association of Governments, CA"  ,"http://gis.sandag.org/GIS/rest/services"]
-    ];
-
-    var root_url = "";
-
-    var tree = [];
-
-    for(var svc in services){
-        $('#selService').append('<option value="'+services[svc][1]+'" >'+services[svc][0]+'</option>');
-    }
-
-    $('#selService').on('change', function(){
-        
-    	$('#txtURL').val($(this).val());
-    	var e = jQuery.Event("keydown");
-		e.which = 13; // # Some key code value
-		$("#txtURL").trigger(e);
-    });
-
-    $('#txtURL').on('keydown', function(e) {
-    	var code = e.keyCode || e.which;
-    	if (code == 13) {
-            $('#tree').fadeOut(100, function(){
-                $('#tree').empty()
-            });
-            
-            $('.wrap').fadeIn(200);
-
-    		tree = [];
-
-    		if (validateURL($(this).val())) {
-
-    			root_url = $(this).val();
-    			//do we have a forward slash at the end of it?
-    			if (root_url.charAt(root_url.length - 1) != '/') {
-    				root_url += '/';
-    			}
-
-    			if (root_url.indexOf("?f=json") != -1) {
-    				root_url = root_url.replace('?f=pjson', '');
-    			}
-
-                $.ajax(root_url + '?f=pjson', {dataType: "jsonp"}).then(function(data) {
-
-    				var core = {
-    					text: 'root',
-    					nodes: []
-    				};
-
-                    var root_defs = [];
-
-                    if(typeof data.folders != 'undefined'){
-    				    root_defs.push(processFolders(data.folders));
-                    }
-
-                    if(typeof data.services != 'undefined'){
-    				    root_defs.push(processServices(data.services, core));
-                    }
-
-    				$.when.apply(null, root_defs).done(function() {
-
-    					//recursive alphabetize
-    					function compare(a, b) {
-    						if (a.text.toLowerCase() < b.text.toLowerCase())
-    							return -1;
-    						if (a.text.toLowerCase() > b.text.toLowerCase())
-    							return 1;
-    						return 0;
-    					}
-
-    					tree.sort(compare);
-
-    					var htm = '<div class="tree well"><ul>';
-    					for (var i = 0; i < tree.length; i++) {
-    						htm += '<li><span class="' + tree[i].type + '"><i class="icon-folder-open"></i>' + tree[i].text + '</span>';
-    						htm += makeTree(tree[i]);
-    						htm += '</li>';
-    					}
-
-    					htm += '</ul></div>';
-
-    					$('#tree').empty().append(htm);
-
-    					$('.tree').prepend('<button class="btn btn-default" id="btnCollapseAll">Collapse All</button>');
-
-    					$("#btnCollapseAll").on('click', function() {
-    						var children = $('li.parent_li').find(' > ul > li');
-    						if (children.is(":visible")) {
-    							children.hide('fast');
-    						}
-    					});
-
-    					$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
-    					$('.tree li.parent_li > span').on('click', function(e) {
-    						var children = $(this).parent('li.parent_li').find(' > ul > li');
-    						if (children.is(":visible")) {
-    							children.hide('fast');
-    							$(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-    						} else {
-    							children.show('fast');
-    							$(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-    						}
-    						e.stopPropagation();
-    					});
-    					$('#tree').fadeIn(100);
-                        $('.wrap').fadeOut(200);
-    				});
-    			});
-    		} else {
-    			//for the root
-    			//change the form to red n stuff
-
-    		}
-    	}
-    });
-
-    function makeTree(branch) {
-
-    	var html = "<ul>";
-
-    	for (var j = 0; j < branch.nodes.length; j++) {
-
-    		if (typeof branch.nodes[j].nodes != 'undefined') {
-    			html += '<li><span class="' + branch.nodes[j].type + '"><i class="icon-folder-open"></i>' + branch.nodes[j].text + '</span>';
-    			html += makeTree(branch.nodes[j]);
-    			html += '</li>';
-    		} else {
-    			html += '<li><span class="' + branch.nodes[j].type + '"><i class="icon-minus-sign"></i><a href="' + branch.nodes[j].url + '" target="_blank">' + branch.nodes[j].text + "</a> </span></li>";
-    		}
-    	}
-
-    	html += '</ul>';
-
-    	return html;
-    }
-
-    function processFolders(folders) {
-
-    	var def = $.Deferred();
-
-    	var deferreds = [];
-
-    	$.each(folders, function(i, v) {
-
-    		var _branch = {
-    			text: v,
-    			nodes: []
-    		};
-
-    		var promise = function() {
-
-    			var nested_deferred = $.Deferred();
-
-                $.ajax(root_url + v + '/?f=pjson', {dataType: "jsonp"}).then(function(data) {
-
-    				var froot_defs = [
-    					processFolders(data.folders),
-    					processServices(data.services, _branch)
-    				];
-
-    				$.when.apply(null, froot_defs).done(function() {
-    					nested_deferred.resolve();
-    				});
-    			});
-
-    			return nested_deferred.promise();
-    		}();
-
-    		promise.done(function() {});
-
-    		deferreds.push(promise);
-
-    	});
-
-    	$.when.apply(null, deferreds).done(function() {
-    		def.resolve();
-    	});
-
-    	return def.promise();
-    }
-
-    function processServices(services, branch) {
-
-    	var def = $.Deferred();
-
-    	var deferreds = [];
-
-    	$.each(services, function(i, v) {
-
-    		if (v.type == 'MapServer' || v.type== 'FeatureServer') {
-
-    			var promise = function() {
-
-    				var nested_deferred = $.Deferred();
-
-    				$.ajax(root_url + v.name + '/' + v.type + '/?f=pjson',{dataType: 'jsonp', success: function(data) {
-    					var url = root_url + v.name + '/' + v.type + '/';
-    					var s = serviceHelper(v, data, url, branch.text);
-    					nested_deferred.resolve(s);
-    				}});
-
-    				return nested_deferred.promise();
-    			}();
-
-    			deferreds.push(promise);
-    		} else {
-    			branch.nodes.push({
-    				text: v.name,
-    				type: v.type,
-    				url: root_url + v.name + '/' + v.type + '/'
-    			});
-    		}
-    	});
-
-    	$.when.apply(null, deferreds).done(function() {
-
-    		$.each(arguments, function(i, v) {
-    			if (branch.text == 'root') {
-    				tree.push(v);
-    			} else {
-    				branch.nodes.push(v);
-    			}
-    		});
-    		if (branch.text != 'root') {
-    			tree.push(branch);
-    		}
-    		def.resolve();
-    	});
-
-    	return def.promise();
-    }
-
-    function serviceHelper(v, data, url, branch) {
-
-    	var cat = {
-    		text: v.name.replace(branch + '/', ''),
-    		type: (typeof data.tileInfo == 'undefined') ? v.type : "MapServer_Tiled",
-    		nodes: []
-    	};
-
-    	$.each(data.layers, function(_i, _v) {
-
-    		if (_v.subLayerIds != null) {
-    			var group = {
-    				text: _v.name,
-    				type: v.type,
-    				nodes: []
-    			};
-
-    			$.each(_v.subLayerIds, function(__i, __v) {
-
-    				try {
-
-    					var lyr = $.grep(data.layers, function(a) {
-    						return a.id == __v;
-    					})[0];
-
-    					group.nodes.push({
-    						text: lyr.name,
-    						url: url,
-    						type: v.type,
-    						layer: __v
-    					});
-    				} catch (ex) {
-    					console.log('ouch');
-    				}
-    			});
-    			cat.nodes.push(group);
-    		}
-
-    		if (_v.parentLayerId == -1 && _v.subLayerIds == null) {
-    			cat.nodes.push({
-    				text: _v.name,
-    				layer: _i,
-    				type: v.type,
-    				url: url
-    			});
-    		}
-    	});
-
-    	return cat;
-    }
-
-    function validateURL(value) {
-    	return false || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
-    }
-    </script>
-
-	</body>
 </html>

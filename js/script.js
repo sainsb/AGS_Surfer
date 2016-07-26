@@ -207,7 +207,7 @@
             var url = url.toUpperCase().replace('/REST/SERVICES', '');
             url = url.toLowerCase();
             
-            $.post(url+'tokens/generateToken', 'username='+username+'&password='+password+'&expiration=10&f=pjson').then(function(token){
+            $.post(url+'/tokens/generateToken', 'username='+username+'&password='+password+'&expiration=10&f=pjson').then(function(token){
                     console.log(token)
                     $('#ags_token').val(token.token)
                     d.resolve();
